@@ -44,6 +44,13 @@ void push_edge(int a, int b, int d, std::vector<std::vector<Node>> &graph) {
 	graph[b].push_back(Node(a, d));
 }
 
+/*
+ * inny sposób
+int distance_x = src[i + 1].x - src[i].x;
+int distance_y = src[i + 1].y - src[i].y;
+min(distance_x, distance_y)
+ */
+
 std::vector<std::vector<Node>> reduce_graph(std::vector<Point> src, int n) {
 	std::vector<std::vector<Node>> graph_x(n);
 	std::vector<std::vector<Node>> graph_y(n);
