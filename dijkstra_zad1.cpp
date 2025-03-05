@@ -108,6 +108,8 @@ int shortest_path(std::vector<std::vector<Node>> graph, int start, int dest, int
 				}
 			}
 		}
+
+		visited[current] = true;
 	}
 
 	return dist[dest];
