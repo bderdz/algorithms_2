@@ -226,15 +226,12 @@ public:
 			for (int e: bip_graph[i].edges) {
 				int e_idx = index_map[e];
 
-				if (dist[e_idx] == dist[i] + 1) {
-					if (dfs(e_idx, h + 1, max_h)) {
-						if (bip_graph[i].is_black) {
-							bip_graph[i].edge = e;
-							bip_graph[e_idx].edge = bip_graph[i].idx;
-						}
-
-						return true;
+				if (dist[e_idx] == dist[i] + 1 && dfs(e_idx, h + 1, max_h)) {
+					if (bip_graph[i].is_black) {
+						bip_graph[i].edge = e;
+						bip_graph[e_idx].edge = bip_graph[i].idx;
 					}
+					return true;
 				}
 			}
 		} else if (!bip_graph[i].is_black && bip_graph[i].edge == -1) {
