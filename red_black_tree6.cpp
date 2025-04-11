@@ -23,18 +23,16 @@ void swap_nodes(node_ptr_map &map, std::stringstream &stream) {
 
 void move_node(int offset, std::string &key, node_ptr_map &map, std::list<Node *> &list) {
 	auto node_it = map[key];
+	auto target_it = node_it;
 
-	long int current_idx = std::distance(list.begin(), node_it);
-	int new_idx = current_idx - offset;
+	for (int i = 0; i < std::abs(offset); i++) {
+		if (offset > 0) target_it--;
+		else target_it++;
 
-	if (new_idx == current_idx) return;
-	if (new_idx < 0) new_idx = 0;
-	if (new_idx >= list.size()) new_idx = list.size() - 1;
+		if (target_it == list.begin() && target_it == list.end()) break;
+	}
 
-	if (new_idx > current_idx) new_idx++;
-	auto target_it = list.begin();
-	std::advance(target_it, new_idx);
-
+	if (offset < 0) target_it++;
 	list.splice(target_it, list, node_it);
 	map[key] = std::prev(target_it);
 }
@@ -52,13 +50,13 @@ int main() {
 
 	node_ptr_map map;
 	std::list<Node *> list;
-	int n, m;
+	unsigned int n, m;
 
 	// INPUT
 	std::cin >> n;
 
 	std::string name;
-	for (int i = 0; i < n; i++) {
+	for (unsigned int i = 0; i < n; i++) {
 		std::cin >> name;
 		Node *new_node = new Node(name);
 		auto node_it = list.insert(list.end(), new_node);
@@ -68,7 +66,7 @@ int main() {
 	std::cin >> m;
 	std::string line;
 	std::cin.ignore();
-	for (int i = 0; i < m; i++) {
+	for (unsigned int i = 0; i < m; i++) {
 		std::getline(std::cin, line);
 		std::stringstream stream(line);
 
@@ -91,5 +89,7 @@ int main() {
 	}
 
 	print_list(list);
+
+	for (Node *node: list) delete node;
 	return 0;
 }
