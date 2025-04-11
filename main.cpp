@@ -1,12 +1,20 @@
 //#include <iostream>
-//#include <unordered_map>
 //
-//struct Pair {
-//	size_t key;
+//class RollingHash {
+//private:
+//	int len;
+//	int base;
+//	int high_base;
+//	int pattern_len;
+//	int pattern_hash;
 //
+//public:
+//	RollingHash() {
+//
+//	}
 //};
 //
 //int main() {
-//	std::unordered_map<Pair *> map;
+//
 //	return 0;
 //}
