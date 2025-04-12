@@ -3,23 +3,75 @@
 #include <unordered_map>
 #include <list>
 
+struct ListNode {
+	std::string name;
+
+	ListNode(std::string &name) : name(name) {}
+};
+
+typedef std::unordered_map<size_t, std::list<ListNode *>::iterator> node_ptr_map;
+
 class RedBlackTree {
 private:
+	struct TreeNode {
+		size_t key;
+		std::list<ListNode *>::iterator value;
+		char color;
+		TreeNode *parent;
+		TreeNode *left;
+		TreeNode *right;
+
+		TreeNode(size_t key, TreeNode *parent = nullptr) {
+			this->key = key;
+			this->parent = parent;
+			this->left = this->right = nullptr;
+		}
+	};
+
+	void left_rotate(TreeNode *x) {
+		TreeNode *y = x->right;
+		x->right = y->left;
+		if (y->left != NIL) y->left->parent = x;
+
+		y->parent = x->parent;
+		if (x->parent == nullptr) root = y;
+		else if (x == x->parent->left) x->parent->left = y;
+		else x->parent->right = y;
+
+		y->left = x;
+		x->parent = y;
+	}
+
+	void right_rotate(TreeNode *x) {
+		TreeNode *y = x->left;
+		x->left = y->right;
+		if (y->right != NIL) y->right->parent = x;
+
+		y->parent = x->parent;
+		if (x->parent == nullptr) root = y;
+		else if (x == x->parent->right) x->parent->right = y;
+		else x->parent->left = y;
+
+		y->right = x;
+		x->parent = y;
+	}
+
+	TreeNode *root;
+	TreeNode *NIL;
 public:
+	RedBlackTree() {
+		this->NIL = new TreeNode(-1);
+		NIL->color = 'B';
+		NIL->left = NIL->right = NIL;
+		this->root = NIL;
+	}
 };
+
 
 class DangerousBoard {
 private:
-	struct Node {
-		std::string name;
-
-		Node(std::string &name) : name(name) {}
-	};
-
-	typedef std::unordered_map<size_t, std::list<Node *>::iterator> node_ptr_map;
-
 	node_ptr_map map;
-	std::list<Node *> list;
+	std::list<ListNode *> list;
 
 	size_t key_hash(const std::string &str) {
 		size_t hash = 2166136261u;
@@ -62,19 +114,19 @@ public:
 	}
 
 	void add_node(std::string &name) {
-		Node *new_node = new Node(name);
+		ListNode *new_node = new ListNode(name);
 		auto node_it = list.insert(list.end(), new_node);
 		map[key_hash(name)] = node_it;
 	}
 
 	void print_board() {
-		for (Node *node: list) {
+		for (ListNode *node: list) {
 			std::cout << node->name << "\n";
 		}
 	}
 
 	~DangerousBoard() {
-		for (Node *node: list) delete node;
+		for (ListNode *node: list) delete node;
 	}
 };
 
