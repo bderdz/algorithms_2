@@ -189,8 +189,14 @@ public:
 		TreeNode *a = map.search(key_a);
 		TreeNode *b = map.search(key_b);
 
-		std::iter_swap(a->value, b->value);
-		std::swap(a->value, b->value);
+		// Zamiana name w liście
+		std::string tmp_name = (*a->value)->name;
+		(*a->value)->name = (*b->value)->name;
+		(*b->value)->name = tmp_name;
+		// Zamiana iteratorów w drzewie
+		auto tmp_it = a->value;
+		a->value = b->value;
+		b->value = tmp_it;
 	}
 
 	void move_node(int offset, std::string &key) {
